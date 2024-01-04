@@ -56,7 +56,7 @@ rq_queue = Queue(connection=redis_connection)
 allowed_webhooks_file = os.environ.get("ALLOWED_WEBHOOKS_FILE", None)
 webhook_store = WebhookService(allowed_webhooks_file)
 
-DEFAULT_MODEL = "tiny"
+DEFAULT_MODEL = "large-v3"
 DEFAULT_TASK = "transcribe"
 DEFAULT_OUTPUT = "srt"
 DEFAULT_UPLOADED_FILENAME = "untitled-transcription"

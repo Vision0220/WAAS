@@ -4,11 +4,12 @@ services:
         build:
             context: .
             # use Dockerfile.gpu when using a NVIDIA GPU
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.gpu
         ports:
             - "3000:3000"
         volumes:
             - .:/workspace
+            - /home/vision/.cache:/root/.cache
         depends_on:
             - redis
         environment:
@@ -23,9 +24,10 @@ services:
         build:
             context: .
             # use Dockerfile.gpu when using a NVIDIA GPU
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.gpu
         volumes:
             - .:/workspace
+            - /home/vision/.cache:/root/.cache
         depends_on:
             - redis
         environment:
@@ -36,14 +38,19 @@ services:
             - ALLOWED_WEBHOOKS_FILE
         command: rq worker --url redis://redis:6379 -c worker-settings
         # Uncomment the following lines when using a NVIDIA GPU
-        # deploy:
-        #     resources:
-        #         reservations:
-        #             devices:
-        #                 - driver: nvidia
-        #                   capabilities: [gpu]
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          capabilities: [gpu]
 
     redis:
         image: redis
         ports:
             - "6379:6379"
+        volumes:
+            - redis-data:/data
+
+volumes:
+    redis-data:
