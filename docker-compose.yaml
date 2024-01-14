@@ -20,6 +20,7 @@ services:
             - DISCLAIMER
             - ALLOWED_WEBHOOKS_FILE
         command: gunicorn -w 2 -b 0.0.0.0:3000 --log-file=- 'src.main:app'
+        restart: always
     worker:
         build:
             context: .
@@ -44,6 +45,7 @@ services:
                     devices:
                         - driver: nvidia
                           capabilities: [gpu]
+        restart: always
 
     redis:
         image: redis
@@ -51,6 +53,7 @@ services:
             - "6379:6379"
         volumes:
             - redis-data:/data
+        restart: always
 
 volumes:
     redis-data:
